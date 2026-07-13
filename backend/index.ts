@@ -6,7 +6,7 @@ app.use(helmet())
 const port = 3000;
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World22!');
+  res.send('Hello World!');
 });
 
 app.listen(port, () => {
