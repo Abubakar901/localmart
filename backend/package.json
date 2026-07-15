@@ -7,18 +7,21 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "start": "node index.ts",
-    "dev": "nodemon index.ts",
+    "start": "node -r tsconfig-paths/register index.ts",
+    "dev": "nodemon -r tsconfig-paths/register index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "helmet": "^8.3.0"
+    "helmet": "^8.3.0",
+    "mongoose": "^9.7.4"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.1",
     "nodemon": "^3.1.14",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^7.0.2"
   }
 }
