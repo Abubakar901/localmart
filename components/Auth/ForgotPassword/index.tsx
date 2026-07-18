@@ -1,0 +1,80 @@
+"use client";
+
+import { useState } from "react";
+import toast from "react-hot-toast";
+
+import { AuthHeader } from "@/components/Auth/AuthHeader";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { AuthFooter } from "@/components/Auth/AuthFooter";
+import { useEmailValidation } from "@/hooks/useEmailValidation";
+
+export const ForgotPasswordForm = () => {
+  const [email, setEmail] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const isValidEmail = useEmailValidation(email);
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    if (!isValidEmail) return;
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Something went wrong");
+        return;
+      }
+
+      toast.success(data.message);
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return (
+    <div className="w-full max-w-[400px]">
+      <AuthHeader
+        heading="Forgot your password?"
+        subHeading="Enter your email and we'll send you a reset link"
+      />
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          placeHolder="Enter Email Address"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <Button
+          buttonText="Send Email"
+          loadingText="Sending Email..."
+          disabled={!isValidEmail}
+          loading={loading}
+        />
+      </form>
+
+      <AuthFooter
+        linkConfig={{
+          preText: "Remembered your password?",
+          hrefText: " Sign in",
+          href: "/signin",
+        }}
+      />
+    </div>
+  );
+};
