@@ -1,4 +1,5 @@
 # LocalMart
+
 A hyper-local marketplace app connecting customers with nearby neighbourhood stores.
 
 ## Tech Stack
@@ -16,7 +17,6 @@ A hyper-local marketplace app connecting customers with nearby neighbourhood sto
 - Google OAuth sign in
 - Email/password authentication
 - Forgot/reset password via email
-
 
 ---
 
