@@ -1,15 +1,10 @@
 import { Schema, model, models } from "mongoose";
-import { ROLES } from "@/lib/constants";
 
-const addressSchema = new Schema({
+import { baseAddressFields, ROLES } from "@/lib/constants";
+
+const userAddressSchema = new Schema({
+  ...baseAddressFields,
   label: { type: String, required: true },
-  fullAddress: { type: String, required: true },
-  city: { type: String },
-  state: { type: String },
-  pinCode: { type: String },
-  coordinates: {
-    type: [Number],
-  },
   isDefault: { type: Boolean, default: false },
 });
 
@@ -21,17 +16,18 @@ const userSchema = new Schema(
     email: {
       type: String,
       unique: true,
-      sparse: true,
+      lowercase: true,
+      trim: true,
     },
     password:{ 
       type: String,
       required: [true, "Password is required"],
     },
-    address: [addressSchema],
-    phone: {
+    address: [userAddressSchema],
+    contactNumber: {
       type: String,
       unique: true,
-      match: [/^\d{10}$/, "Please enter a valid 10 digit phone number"],
+      match: [/^\d{10}$/, "Please enter a valid 10 digit phone contact number"],
     },
     role: {
       type: String,
@@ -43,5 +39,7 @@ const userSchema = new Schema(
   },
   { timestamps: true },
 );
+
+userAddressSchema.index({ coordinates: "2dsphere" });
 
 export const User = models.User || model("User", userSchema);

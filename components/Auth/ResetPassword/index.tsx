@@ -7,20 +7,24 @@ import toast from "react-hot-toast";
 import { AuthHeader } from "@/components/Auth/AuthHeader";
 import { Button } from "@/components/ui/Button";
 import { PasswordValidation } from "@/components/Auth/PasswordValidation";
+import {
+  validatePassword,
+  validatePasswordMatch
+} from "@/utils/formValidation";
 
 export const ResetPasswordForm = () => {
   const searchParams = useSearchParams();
-const token = searchParams.get("token") ?? "";
+  const token = searchParams.get("token") ?? "";
 
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (!isPasswordValid) return;
+    if (!validatePassword(password)) return;
+    if (!validatePasswordMatch(password, confirmPassword)) return;
 
     setLoading(true);
 
@@ -28,7 +32,7 @@ const token = searchParams.get("token") ?? "";
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, password, confirmPassword })
+        body: JSON.stringify({ token, password, confirmPassword }),
       });
 
       const data = await res.json();
@@ -49,28 +53,26 @@ const token = searchParams.get("token") ?? "";
     }
   };
 
-  
   return (
-    <div className="w-full max-w-[400px]">
+    <div className="w-full">
       <AuthHeader
         heading="Forgot your password?"
         subHeading="Enter your email and we'll send you a reset link"
       />
 
       <form onSubmit={handleSubmit} className="space-y-4">
-         <PasswordValidation
+        <PasswordValidation
           password={password}
           confirmPassword={confirmPassword}
           onPasswordChange={(e) => setPassword(e.target.value)}
           onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
-          onValidChange={(isValid) => setIsPasswordValid(isValid)}
         />
 
         <Button
           buttonText="Reset Password"
           loadingText="Resetting Password..."
-          disabled={false}
           loading={loading}
+          additionalClass="mt-6"
         />
       </form>
     </div>

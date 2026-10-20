@@ -21,8 +21,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  fullWidth
 }: Readonly<{
   children: React.ReactNode;
+  fullWidth?: boolean;
 }>) {
   return (
     <html

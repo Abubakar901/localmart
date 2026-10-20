@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/Tooltip", "components/Auth/AuthLayout"  ],
+, "components/Tooltip", "components/Auth/AuthLayout", "components/Shops/CreateShopForm.tss"  ],
   "exclude": ["node_modules"]
 }

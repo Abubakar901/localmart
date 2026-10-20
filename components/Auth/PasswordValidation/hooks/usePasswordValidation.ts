@@ -9,7 +9,6 @@ export function usePasswordValidation(password: string, confirmPassword: string)
 
   const isPasswordValid = Object.values(checks).every(Boolean);
   const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword;
-  const isValid = isPasswordValid && passwordsMatch;
 
-  return { checks, isPasswordValid, passwordsMatch, isValid };
+  return { checks, isPasswordValid, passwordsMatch };
 }

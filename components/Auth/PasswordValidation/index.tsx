@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, X } from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
@@ -12,7 +12,6 @@ type PasswordValidationProps = {
   confirmPassword: string;
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onValidChange: (isValid: boolean) => void;
 };
 
 export const PasswordValidation = ({
@@ -20,20 +19,17 @@ export const PasswordValidation = ({
   confirmPassword,
   onPasswordChange,
   onConfirmPasswordChange,
-  onValidChange,
 }: PasswordValidationProps) => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [confirmTouched, setConfirmTouched] = useState(false);
 
-  const { checks, isPasswordValid, passwordsMatch, isValid } =
-    usePasswordValidation(password, confirmPassword);
+  const { checks, isPasswordValid, passwordsMatch } = usePasswordValidation(
+    password,
+    confirmPassword,
+  );
 
   const showConfirmError =
     confirmTouched && confirmPassword.length > 0 && !passwordsMatch;
-
-  useEffect(() => {
-    onValidChange(isValid);
-  }, [isValid]);
 
   return (
     <div className="space-y-4">
@@ -60,6 +56,8 @@ export const PasswordValidation = ({
         align="right"
       >
         <Input
+          label="Password"
+          required
           placeHolder="Enter password"
           type="password"
           value={password}
@@ -71,6 +69,8 @@ export const PasswordValidation = ({
 
       <div>
         <Input
+          label="Confirm Password"
+          required
           placeHolder="Confirm password"
           type="password"
           value={confirmPassword}

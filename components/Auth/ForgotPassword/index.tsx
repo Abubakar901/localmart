@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { AuthFooter } from "@/components/Auth/AuthFooter";
 import { useEmailValidation } from "@/hooks/useEmailValidation";
+import { validateEmail } from "@/utils/formValidation";
 
 export const ForgotPasswordForm = () => {
   const [email, setEmail] = useState<string>("");
@@ -18,8 +19,8 @@ export const ForgotPasswordForm = () => {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (!isValidEmail) return;
-
+if (!validateEmail(isValidEmail)) return
+    
     setLoading(true);
 
     try {
@@ -46,14 +47,16 @@ export const ForgotPasswordForm = () => {
 
 
   return (
-    <div className="w-full max-w-[400px]">
+    <div className="w-full">
       <AuthHeader
         heading="Forgot your password?"
-        subHeading="Enter your email and we'll send you a reset link"
+        subHeading="Enter your email address and we'll send you a link to reset your password"
       />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
+          label="Email Address"
+          required
           placeHolder="Enter Email Address"
           type="email"
           value={email}
@@ -63,8 +66,8 @@ export const ForgotPasswordForm = () => {
         <Button
           buttonText="Send Email"
           loadingText="Sending Email..."
-          disabled={!isValidEmail}
           loading={loading}
+          additionalClass="mt-6"
         />
       </form>
 
